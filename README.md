@@ -11,5 +11,6 @@ docker build -t giovanifranz/fullcycle .
 #run
 docker run giovanifranz/fullcycle
 
+#publish
 docker publish giovanifranz/fullcycle
 ```
