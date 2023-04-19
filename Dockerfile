@@ -1,15 +1,13 @@
-FROM golang:1.15.8-alpine3.13 AS builder
+FROM golang:1.16-alpine AS builder
 
-RUN apk add --no-cache --update git
+WORKDIR /app
 
-WORKDIR /go/src/app
-COPY . .
+COPY rocks.go ./
 
-RUN go get -d -v \
-    && go install -v \
-    && go build
+RUN go build -ldflags "-s -w" rocks.go
 
 FROM scratch AS runtime
-WORKDIR /tmp
-COPY --from=builder /go/bin/app .
-ENTRYPOINT ["/tmp/app"]
+
+COPY --from=builder /app/rocks /rocks
+
+CMD [ "/rocks" ]
